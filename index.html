@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT & Data Requirements Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:       #060D1F;
+  --navy-2:     #0A1628;
+  --navy-3:     #0F1E38;
+  --navy-4:     #162344;
+  --teal:       #00E5C3;
+  --teal-dim:   #00B49A;
+  --teal-glow:  rgba(0,229,195,0.18);
+  --teal-soft:  rgba(0,229,195,0.08);
+  --blue-acc:   #3B8BFF;
+  --blue-glow:  rgba(59,139,255,0.18);
+  --gold:       #FFB740;
+  --white:      #F0F6FF;
+  --white-dim:  rgba(240,246,255,0.7);
+  --white-soft: rgba(240,246,255,0.12);
+  --white-xsoft:rgba(240,246,255,0.05);
+  --border:     rgba(0,229,195,0.15);
+  --border-soft:rgba(240,246,255,0.08);
+  --red:        #FF4C6A;
+  --red-soft:   rgba(255,76,106,0.12);
+  --green:      #00E5C3;
+  --shadow-teal:0 0 40px rgba(0,229,195,0.12);
+  --shadow-card:0 4px 32px rgba(0,0,0,0.45);
+  --radius:     12px;
+  --radius-lg:  20px;
+  --radius-xl:  28px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--white);
+  background: var(--navy);
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATED BACKGROUND
+═══════════════════════════════════════════ */
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(0,229,195,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 100%, rgba(59,139,255,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(6,13,31,0) 0%, transparent 100%),
+    linear-gradient(160deg, #060D1F 0%, #081529 50%, #060D1F 100%);
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0;
+  animation: orbFloat linear infinite;
+}
+.orb-1 { width:500px; height:500px; background: radial-gradient(circle, rgba(0,229,195,0.15), transparent 70%); top:-10%; left:-5%; animation-duration:18s; animation-delay:0s; }
+.orb-2 { width:400px; height:400px; background: radial-gradient(circle, rgba(59,139,255,0.12), transparent 70%); bottom:5%; right:-5%; animation-duration:22s; animation-delay:-8s; }
+.orb-3 { width:300px; height:300px; background: radial-gradient(circle, rgba(0,229,195,0.08), transparent 70%); top:40%; left:60%; animation-duration:26s; animation-delay:-14s; }
+
+@keyframes orbFloat {
+  0%   { opacity:0; transform: scale(0.8) translate(0,0); }
+  10%  { opacity:1; }
+  50%  { transform: scale(1.15) translate(30px,-20px); }
+  90%  { opacity:1; }
+  100% { opacity:0; transform: scale(0.8) translate(0,0); }
+}
+
+/* Particle canvas */
+#particles { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+/* Grid lines */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,229,195,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,195,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+}
+
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.page-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 20px 100px;
+}
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+.form-header {
+  position: relative;
+  padding: 56px 48px 44px;
+  margin-bottom: 36px;
+  overflow: hidden;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  border: 1px solid var(--border);
+  border-top: none;
+  background: linear-gradient(145deg, rgba(0,229,195,0.06) 0%, rgba(6,13,31,0.95) 60%, rgba(59,139,255,0.05) 100%);
+  backdrop-filter: blur(20px);
+}
+
+.header-glow {
+  position: absolute;
+  top: -80px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 200px;
+  background: radial-gradient(ellipse, rgba(0,229,195,0.20) 0%, transparent 70%);
+  pointer-events: none;
+  animation: glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%,100% { opacity:0.6; transform: translateX(-50%) scaleX(1); }
+  50%      { opacity:1;   transform: translateX(-50%) scaleX(1.1); }
+}
+
+.header-line {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  animation: scanLine 3s ease-in-out infinite;
+}
+@keyframes scanLine {
+  0%,100% { opacity:0.4; }
+  50%      { opacity:1; }
+}
+
+.header-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 16px;
+}
+.header-tag::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1.5px;
+  background: var(--teal);
+  animation: tagLine 2s ease-in-out infinite;
+}
+@keyframes tagLine {
+  0%,100% { width:16px; opacity:0.6; }
+  50%      { width:28px; opacity:1; }
+}
+
+.form-header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #fff 30%, var(--teal) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.form-header p {
+  font-size: 14px;
+  color: var(--white-dim);
+  max-width: 520px;
+  line-height: 1.75;
+}
+
+.header-badges {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: 24px;
+}
+.hbadge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1px solid;
+  letter-spacing: 0.03em;
+}
+.hbadge-teal  { color: var(--teal);     border-color: rgba(0,229,195,0.3); background: rgba(0,229,195,0.06); }
+.hbadge-blue  { color: var(--blue-acc); border-color: rgba(59,139,255,0.3); background: rgba(59,139,255,0.06); }
+.hbadge-gold  { color: var(--gold);     border-color: rgba(255,183,64,0.3); background: rgba(255,183,64,0.06); }
+.hbadge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.4; transform:scale(0.7); }
+}
+
+/* ═══════════════════════════════════════════
+   PROGRESS
+═══════════════════════════════════════════ */
+.progress-wrap {
+  margin-bottom: 32px;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  background: var(--white-xsoft);
+  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(10px);
+}
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.progress-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+.progress-pct {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--white);
+}
+.progress-track {
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 100px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--teal-dim), var(--teal), var(--blue-acc));
+  background-size: 200% 100%;
+  transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+  animation: shimmer 2s linear infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 12px var(--teal);
+  transition: opacity 0.3s;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION CARDS
+═══════════════════════════════════════════ */
+.section {
+  position: relative;
+  background: linear-gradient(145deg, rgba(22,35,68,0.9) 0%, rgba(10,22,40,0.95) 100%);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: sectionReveal 0.6s cubic-bezier(0.34,1.1,0.64,1) forwards;
+}
+.section:hover {
+  border-color: var(--border);
+  box-shadow: var(--shadow-card), var(--shadow-teal);
+}
+
+/* Staggered reveal */
+.section:nth-child(1)  { animation-delay: 0.05s; }
+.section:nth-child(2)  { animation-delay: 0.10s; }
+.section:nth-child(3)  { animation-delay: 0.15s; }
+.section:nth-child(4)  { animation-delay: 0.20s; }
+.section:nth-child(5)  { animation-delay: 0.25s; }
+.section:nth-child(6)  { animation-delay: 0.30s; }
+.section:nth-child(7)  { animation-delay: 0.35s; }
+.section:nth-child(8)  { animation-delay: 0.40s; }
+.section:nth-child(9)  { animation-delay: 0.45s; }
+.section:nth-child(10) { animation-delay: 0.50s; }
+
+@keyframes sectionReveal {
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* Accent bar left */
+.section::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 20%; bottom: 20%;
+  width: 2px;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(180deg, transparent, var(--teal), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.section:hover::before { opacity: 1; }
+
+/* Corner glow on hover */
+.section::after {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle at top left, rgba(0,229,195,0.08), transparent 70%);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.section:hover::after { opacity: 1; }
+
+/* Section header */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.sec-num {
+  position: relative;
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  background: var(--teal-soft);
+  border: 1px solid rgba(0,229,195,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: var(--teal);
+  flex-shrink: 0;
+}
+.sec-num::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,229,195,0.12);
+  animation: numRing 3s ease-in-out infinite;
+}
+@keyframes numRing {
+  0%,100% { transform:scale(1); opacity:0.5; }
+  50%      { transform:scale(1.1); opacity:0; }
+}
+.sec-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.01em;
+}
+.new-tag {
+  font-family: 'Syne', sans-serif;
+  font-size: 9px; font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: rgba(0,229,195,0.1);
+  color: var(--teal);
+  border: 1px solid rgba(0,229,195,0.25);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-left: 8px;
+  animation: newPulse 2s ease-in-out infinite;
+}
+@keyframes newPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,229,195,0.3); }
+  50%      { box-shadow: 0 0 0 4px rgba(0,229,195,0); }
+}
+
+/* ═══════════════════════════════════════════
+   FIELDS
+═══════════════════════════════════════════ */
+.field { margin-bottom: 22px; }
+.field:last-child { margin-bottom: 0; }
+
+.field-label {
+  display: flex; align-items: center; gap: 5px;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+  margin-bottom: 8px;
+}
+.req { color: var(--teal); font-size: 13px; }
+.hint {
+  font-size: 11px;
+  color: rgba(240,246,255,0.35);
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* Inputs */
+input[type=text], input[type=email], input[type=date], select, textarea {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  color: var(--white);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(240,246,255,0.10);
+  border-radius: var(--radius);
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+  -webkit-appearance: none;
+}
+input[type=text]::placeholder,
+input[type=email]::placeholder,
+textarea::placeholder { color: rgba(240,246,255,0.22); }
+
+input[type=text]:hover, input[type=email]:hover,
+input[type=date]:hover, select:hover, textarea:hover {
+  border-color: rgba(0,229,195,0.2);
+  background: rgba(255,255,255,0.06);
+}
+input[type=text]:focus, input[type=email]:focus,
+input[type=date]:focus, select:focus, textarea:focus {
+  border-color: rgba(0,229,195,0.5);
+  background: rgba(0,229,195,0.04);
+  box-shadow: 0 0 0 3px rgba(0,229,195,0.08), 0 0 20px rgba(0,229,195,0.06);
+}
+textarea { resize: vertical; min-height: 88px; line-height: 1.7; }
+
+select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2300E5C3' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+select option { background: #0A1628; color: var(--white); }
+
+/* ═══════════════════════════════════════════
+   GRIDS
+═══════════════════════════════════════════ */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* ═══════════════════════════════════════════
+   PILLS
+═══════════════════════════════════════════ */
+.pill-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  display: inline-flex; align-items: center;
+  padding: 7px 16px;
+  border: 1px solid rgba(240,246,255,0.12);
+  border-radius: 100px;
+  font-size: 12px; font-weight: 400;
+  cursor: pointer;
+  background: rgba(255,255,255,0.03);
+  color: var(--white-dim);
+  transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+.pill input { display: none; }
+.pill:hover {
+  border-color: rgba(0,229,195,0.4);
+  color: var(--teal);
+  background: rgba(0,229,195,0.05);
+  transform: translateY(-1px);
+}
+.pill.active {
+  border-color: var(--teal);
+  background: rgba(0,229,195,0.12);
+  color: var(--teal);
+  font-weight: 500;
+  box-shadow: 0 0 16px rgba(0,229,195,0.2), inset 0 0 12px rgba(0,229,195,0.05);
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════
+   CHECKBOX CARDS
+═══════════════════════════════════════════ */
+.check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px,1fr)); gap: 8px; }
+.check-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 13px;
+  border: 1px solid rgba(240,246,255,0.08);
+  border-radius: var(--radius);
+  font-size: 12px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.02);
+  color: rgba(240,246,255,0.55);
+  transition: all 0.2s cubic-bezier(0.34,1.4,0.64,1);
+  user-select: none;
+}
+.check-card input[type=checkbox] {
+  width: 15px; height: 15px;
+  accent-color: var(--teal);
+  flex-shrink: 0;
+}
+.check-card:hover {
+  border-color: rgba(0,229,195,0.25);
+  color: var(--white);
+  background: rgba(0,229,195,0.04);
+  transform: translateY(-1px);
+}
+.check-card.active {
+  border-color: rgba(0,229,195,0.4);
+  background: rgba(0,229,195,0.08);
+  color: var(--teal);
+  box-shadow: 0 0 12px rgba(0,229,195,0.12);
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════
+   REPEATABLE BLOCKS
+═══════════════════════════════════════════ */
+.repeat-block {
+  border: 1px solid rgba(0,229,195,0.12);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 14px;
+  background: rgba(0,229,195,0.03);
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  animation: blockSlideIn 0.35s cubic-bezier(0.34,1.2,0.64,1) forwards;
+}
+@keyframes blockSlideIn {
+  from { opacity:0; transform:translateY(12px) scale(0.98); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+.repeat-block:hover {
+  border-color: rgba(0,229,195,0.22);
+  box-shadow: 0 0 20px rgba(0,229,195,0.06);
+}
+.repeat-block.process {
+  border-color: rgba(59,139,255,0.15);
+  background: rgba(59,139,255,0.03);
+}
+.repeat-block.process:hover {
+  border-color: rgba(59,139,255,0.28);
+  box-shadow: 0 0 20px rgba(59,139,255,0.08);
+}
+
+.repeat-block-title {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px; font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 0.05em;
+}
+.repeat-block.process .repeat-block-title { color: var(--blue-acc); }
+
+.block-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 7px;
+  background: rgba(0,229,195,0.12);
+  color: var(--teal);
+  font-size: 11px; font-weight: 700;
+  margin-right: 8px;
+}
+.repeat-block.process .block-count { background: rgba(59,139,255,0.12); color: var(--blue-acc); }
+
+.remove-btn {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--red);
+  background: var(--red-soft);
+  border: 1px solid rgba(255,76,106,0.2);
+  border-radius: 100px;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Syne', sans-serif;
+}
+.remove-btn:hover { background: rgba(255,76,106,0.2); transform: scale(1.05); }
+
+.add-repeat-btn {
+  width: 100%;
+  padding: 11px;
+  background: none;
+  border: 1px dashed rgba(0,229,195,0.25);
+  border-radius: var(--radius);
+  color: var(--teal);
+  font-size: 12px; font-weight: 500;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: all 0.25s;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.03em;
+}
+.add-repeat-btn:hover {
+  background: rgba(0,229,195,0.05);
+  border-color: rgba(0,229,195,0.5);
+  box-shadow: 0 0 20px rgba(0,229,195,0.08);
+  transform: translateY(-1px);
+}
+.add-repeat-btn.process {
+  border-color: rgba(59,139,255,0.25);
+  color: var(--blue-acc);
+}
+.add-repeat-btn.process:hover {
+  background: rgba(59,139,255,0.05);
+  border-color: rgba(59,139,255,0.5);
+  box-shadow: 0 0 20px rgba(59,139,255,0.08);
+}
+
+/* ═══════════════════════════════════════════
+   SUBMIT AREA
+═══════════════════════════════════════════ */
+.submit-wrap { text-align: center; margin-top: 40px; }
+.submit-note {
+  font-size: 12px;
+  color: rgba(240,246,255,0.3);
+  margin-bottom: 18px;
+  font-style: italic;
+}
+
+.submit-btn {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(0,229,195,0.15) 0%, rgba(59,139,255,0.15) 100%);
+  color: var(--white);
+  border: 1px solid rgba(0,229,195,0.35);
+  font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 16px 52px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  overflow: hidden;
+}
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,229,195,0.25), rgba(59,139,255,0.25));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.submit-btn:hover::before { opacity:1; }
+.submit-btn:hover {
+  border-color: var(--teal);
+  box-shadow: 0 0 40px rgba(0,229,195,0.25), 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(-3px) scale(1.02);
+}
+.submit-btn:active { transform: translateY(0) scale(0.99); }
+.submit-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+
+/* Glow ring on button */
+.btn-glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 100px;
+  border: 1px solid rgba(0,229,195,0.2);
+  animation: btnRing 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btnRing {
+  0%,100% { transform:scale(1); opacity:0.5; }
+  50%      { transform:scale(1.06); opacity:0; }
+}
+
+.submit-arrow { font-size: 18px; transition: transform 0.3s; }
+.submit-btn:hover .submit-arrow { transform: translateX(4px); }
+
+.spinner {
+  display: none;
+  width: 24px; height: 24px;
+  border: 2px solid rgba(0,229,195,0.2);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin: 16px auto 0;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* Error */
+.error-banner {
+  display: none;
+  margin-top: 16px;
+  padding: 12px 18px;
+  background: var(--red-soft);
+  border: 1px solid rgba(255,76,106,0.25);
+  border-radius: var(--radius);
+  color: #FF8090;
+  font-size: 13px;
+}
+
+/* Success */
+.success-card {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  margin-top: 28px;
+  padding: 48px 32px;
+  background: linear-gradient(145deg, rgba(0,229,195,0.08), rgba(6,13,31,0.95));
+  border: 1px solid rgba(0,229,195,0.25);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  animation: successPop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes successPop {
+  from { opacity:0; transform:scale(0.9); }
+  to   { opacity:1; transform:scale(1); }
+}
+.success-card::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%; transform: translateX(-50%);
+  width: 300px; height: 200px;
+  background: radial-gradient(ellipse, rgba(0,229,195,0.2), transparent 70%);
+  pointer-events: none;
+}
+.success-icon {
+  font-size: 52px;
+  margin-bottom: 16px;
+  animation: iconBounce 0.6s cubic-bezier(0.34,1.8,0.64,1) 0.2s both;
+}
+@keyframes iconBounce {
+  from { transform:scale(0); }
+  to   { transform:scale(1); }
+}
+.success-card h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+.success-card p { font-size: 14px; color: var(--white-dim); line-height: 1.8; }
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: rgba(0,229,195,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,229,195,0.4); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .form-header { padding: 40px 24px 32px; }
+  .form-header h1 { font-size: 26px; }
+  .section { padding: 20px 18px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════
+   SECTION DESCRIPTION TEXT
+═══════════════════════════════════════════ */
+.sec-desc {
+  font-size: 12px;
+  color: rgba(240,246,255,0.35);
+  margin-bottom: 18px;
+  font-style: italic;
+  border-left: 2px solid rgba(0,229,195,0.2);
+  padding-left: 10px;
+}
+</style>
+</head>
+<body>
+
+<!-- Live Background -->
+<div class="bg-canvas">
+  <div class="bg-gradient"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="bg-grid"></div>
+<canvas id="particles"></canvas>
+
+<div class="page-wrap">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="form-header">
+    <div class="header-glow"></div>
+    <div class="header-line"></div>
+    <div class="header-tag">IB&amp; Data Team </div>
+    <h1>Requirements<br>Intake Form</h1>
+    <p>Dashboard &amp; Report Development Request for Sales &amp; Marketing Teams.<br>
+       Complete all sections and submit once — the IT &amp; Data team responds within 3 business days.</p>
+    <div class="header-badges">
+      <span class="hbadge hbadge-teal">One-time Submission</span>
+      <span class="hbadge hbadge-blue">Connected to Google Sheets</span>
+      <span class="hbadge hbadge-gold">SLA: 3 Business Days</span>
+    </div>
+  </div>
+
+  <!-- ═══ PROGRESS ═══ -->
+  <div class="progress-wrap">
+    <div class="progress-top">
+      <span class="progress-label" id="prog-label">Progress</span>
+      <span class="progress-pct" id="prog-pct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 1 — REQUESTOR ═══ -->
+  <div class="section" id="sec1">
+    <div class="section-header">
+      <div class="sec-num">1</div>
+      <div class="sec-title">Requestor Details</div>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <div class="field-label">Full Name <span class="req">*</span></div>
+        <input type="text" id="fullName" placeholder="e.g. Daniel Kumar">
+      </div>
+      <div class="field">
+        <div class="field-label">Work Email <span class="req">*</span></div>
+        <input type="email" id="workEmail" placeholder="e.g. daniel@aurolab.com">
+      </div>
+      <div class="field">
+        <div class="field-label">Country / Region <span class="req">*</span></div>
+        <select id="region">
+          <option value="">Select country / region…</option>
+          <option>India</option>
+          <option>North America</option>
+          <option>Europe</option>
+          <option>Middle East &amp; Africa</option>
+          <option>Asia Pacific</option>
+          <option>Latin America</option>
+          <option>Global</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="field-label">Business Team <span class="req">*</span></div>
+        <input type="text" id="businessUnit" placeholder="e.g. Sales, Marketing, Operations">
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 2 — SEGMENT ═══ -->
+  <div class="section" id="sec2">
+    <div class="section-header">
+      <div class="sec-num">2</div>
+      <div class="sec-title">Business Segment</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Select your business segment <span class="req">*</span></div>
+      <div class="pill-group" data-id="businessSegment">
+        <label class="pill"><input type="radio" name="seg">Equipment</label>
+        <label class="pill"><input type="radio" name="seg">NGO</label>
+        <label class="pill"><input type="radio" name="seg">OBL</label>
+        <label class="pill"><input type="radio" name="seg">Therapeutics</label>
+        <label class="pill"><input type="radio" name="seg">Dealer &amp; Commercial</label>
+        <label class="pill"><input type="radio" name="seg">Common</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 3 — OVERVIEW ═══ -->
+  <div class="section" id="sec3">
+    <div class="section-header">
+      <div class="sec-num">3</div>
+      <div class="sec-title">Requirement Overview</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Requirement type <span class="req">*</span></div>
+      <div class="pill-group" data-id="requirementType">
+        <label class="pill"><input type="radio" name="rtype">IT</label>
+        <label class="pill"><input type="radio" name="rtype">Data</label>
+        <label class="pill"><input type="radio" name="rtype">Both</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Requirement title <span class="req">*</span></div>
+      <input type="text" id="requirementTitle" placeholder="e.g. Regional Sales Performance Dashboard">
+    </div>
+    <div class="field">
+      <div class="field-label">Description <span class="req">*</span></div>
+      <textarea id="description" placeholder="Briefly describe what you need, the scope, and any references to existing reports or tools."></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 4 — BUSINESS REQUIREMENTS ═══ -->
+  <div class="section" id="sec4">
+    <div class="section-header">
+      <div class="sec-num">4</div>
+      <div class="sec-title">Business Requirements</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Business objective <span class="req">*</span></div>
+      <textarea id="businessObjective" placeholder="e.g. Improve visibility into quarterly sales performance across regions to support faster decision-making."></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Problem statement <span class="req">*</span></div>
+      <textarea id="problemStatement" placeholder="e.g. Data is scattered across multiple spreadsheets and is not consolidated in one view."></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Expected outcome</div>
+      <textarea id="expectedOutcome" placeholder="e.g. A single live dashboard showing KPIs by region, product, and territory."></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Business impact</div>
+      <textarea id="businessImpact" placeholder="e.g. Reduce manual reporting by 5 hrs/week. Enable real-time target tracking for leadership."></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 5 — TARGET USERS ═══ -->
+  <div class="section" id="sec5">
+    <div class="section-header">
+      <div class="sec-num">5</div>
+      <div class="sec-title">Target Users</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Who will use this? Select all that apply <span class="req">*</span></div>
+      <div class="check-grid" data-id="targetUsers">
+        <label class="check-card"><input type="checkbox" value="Sales Head"> Sales Head</label>
+        <label class="check-card"><input type="checkbox" value="Continental Manager"> Continental Manager</label>
+        <label class="check-card"><input type="checkbox" value="Regional Sales Manager"> Regional Sales Manager</label>
+        <label class="check-card"><input type="checkbox" value="BDE"> BDE (Business Dev. Exec.)</label>
+        <label class="check-card"><input type="checkbox" value="Marketing Head"> Marketing Head</label>
+        <label class="check-card"><input type="checkbox" value="Promotion Executive"> Promotion Executive</label>
+        <label class="check-card"><input type="checkbox" value="Market Executive"> Market Executive</label>
+        <label class="check-card"><input type="checkbox" value="Product Manager"> Product Manager</label>
+        <label class="check-card"><input type="checkbox" value="Product Executive"> Product Executive</label>
+        <label class="check-card"><input type="checkbox" value="Regulatory Executive"> Regulatory Executive</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 6 — KPI INDEX ═══ -->
+  <div class="section" id="sec6">
+    <div class="section-header">
+      <div class="sec-num">6</div>
+      <div class="sec-title">KPI Index</div>
+    </div>
+    <p class="sec-desc">Define each KPI you want tracked. Click <strong style="color:var(--teal)">Add another KPI</strong> to include more.</p>
+    <div id="kpi-container"></div>
+    <button type="button" class="add-repeat-btn" onclick="addKPI()">+ Add another KPI</button>
+  </div>
+
+  <!-- ═══ SECTION 7 — PROCESS IMPROVEMENT ═══ -->
+  <div class="section" id="sec7">
+    <div class="section-header">
+      <div class="sec-num">7</div>
+      <div class="sec-title">Process Improvement <span class="new-tag">NEW</span></div>
+    </div>
+    <p class="sec-desc">Describe each process that needs improvement. Click <strong style="color:var(--blue-acc)">Add another process</strong> for multiple areas.</p>
+    <div id="process-container"></div>
+    <button type="button" class="add-repeat-btn process" onclick="addProcess()">+ Add another process</button>
+  </div>
+
+  <!-- ═══ SECTION 8 — REPORT/DASHBOARD ═══ -->
+  <div class="section" id="sec8">
+    <div class="section-header">
+      <div class="sec-num">8</div>
+      <div class="sec-title">Report / Dashboard Requirements</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Output type <span class="req">*</span></div>
+      <div class="pill-group" data-id="outputType">
+        <label class="pill"><input type="radio" name="output">Report</label>
+        <label class="pill"><input type="radio" name="output">Dashboard</label>
+        <label class="pill"><input type="radio" name="output">Both</label>
+        <label class="pill"><input type="radio" name="output">Other</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Preferred visualization — select all that apply</div>
+      <div class="check-grid" data-id="visualization">
+        <label class="check-card"><input type="checkbox" value="Table/Grid"> Table / Grid view</label>
+        <label class="check-card"><input type="checkbox" value="KPI Cards"> KPI cards / Scorecards</label>
+        <label class="check-card"><input type="checkbox" value="Line Chart"> Line chart (trends)</label>
+        <label class="check-card"><input type="checkbox" value="Bar Chart"> Bar / Column chart</label>
+        <label class="check-card"><input type="checkbox" value="Pie/Donut"> Pie / Donut chart</label>
+        <label class="check-card"><input type="checkbox" value="Waterfall"> Waterfall chart</label>
+        <label class="check-card"><input type="checkbox" value="Heat Map"> Heat map</label>
+        <label class="check-card"><input type="checkbox" value="Geo Map"> Geographic map</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Additional visualization notes</div>
+      <input type="text" id="vizNotes" placeholder="e.g. Stacked bar for regional breakdown, donut for market share">
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 9 — FREQUENCY ═══ -->
+  <div class="section" id="sec9">
+    <div class="section-header">
+      <div class="sec-num">9</div>
+      <div class="sec-title">Frequency &amp; Timeline</div>
+    </div>
+    <div class="grid-2" style="margin-bottom:22px">
+      <div class="field" style="margin-bottom:0">
+        <div class="field-label">Data refresh frequency <span class="req">*</span></div>
+        <div class="pill-group" data-id="refreshFrequency">
+          <label class="pill"><input type="radio" name="freq">One-time</label>
+          <label class="pill"><input type="radio" name="freq">Daily</label>
+          <label class="pill"><input type="radio" name="freq">Weekly</label>
+          <label class="pill"><input type="radio" name="freq">Monthly</label>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <div class="field-label">Required delivery date</div>
+        <input type="date" id="deliveryDate">
+        <div class="hint">Leave blank if flexible</div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Time view required — select all that apply</div>
+      <div class="check-grid" data-id="timeView">
+        <label class="check-card"><input type="checkbox" value="Daily"> Daily</label>
+        <label class="check-card"><input type="checkbox" value="Weekly"> Weekly</label>
+        <label class="check-card"><input type="checkbox" value="Monthly"> Monthly</label>
+        <label class="check-card"><input type="checkbox" value="YTD"> Year-to-date (YTD)</label>
+        <label class="check-card"><input type="checkbox" value="Quarterly"> Quarterly</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 10 — TARGETS & OPTIONAL IT ═══ -->
+  <div class="section" id="sec10">
+    <div class="section-header">
+      <div class="sec-num">10</div>
+      <div class="sec-title">Targets, Alerts &amp; Optional IT</div>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <div class="field-label">KPI targets</div>
+        <textarea id="kpiTargets" placeholder="e.g. Monthly sales target = $500K. Achievement threshold = 80%."></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label">Alert requirements</div>
+        <textarea id="alertRequirements" placeholder="e.g. Email RSM when region drops below 70% of monthly target."></textarea>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Supporting document link</div>
+      <input type="text" id="supportingDoc" placeholder="e.g. Google Drive or SharePoint link to mockups, sample data, or reference reports">
+      <div class="hint">Ensure the link is accessible to the IT &amp; Data team before submitting</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Other comments or special requirements</div>
+      <textarea id="otherComments" placeholder="e.g. Must be mobile-friendly. Needs row-level security by region."></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ SUBMIT ═══ -->
+  <div class="submit-wrap">
+    <p class="submit-note">By submitting, you confirm this information is accurate and approved by your team lead.</p>
+    <button type="button" class="submit-btn" id="submit-btn" onclick="submitForm()">
+      <div class="btn-glow"></div>
+      <span>Submit Requirement</span>
+      <span class="submit-arrow">→</span>
+    </button>
+    <div class="spinner" id="spinner"></div>
+    <div class="error-banner" id="error-banner">⚠ Submission failed. Please check your connection and try again.</div>
+    <div class="success-card" id="success-card">
+      <div class="success-icon">✦</div>
+      <h2>Requirement Submitted</h2>
+      <p>Your response has been recorded in Google Sheets.<br>
+         The IT &amp; Data team will review and reach out within <strong style="color:var(--teal)">3 business days</strong>.</p>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+/* ═══════════════════════════════════════════
+   PARTICLE SYSTEM
+═══════════════════════════════════════════ */
+(function() {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function createParticle() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: -Math.random() * 0.4 - 0.1,
+      size: Math.random() * 1.5 + 0.3,
+      alpha: Math.random() * 0.4 + 0.05,
+      hue: Math.random() < 0.7 ? 170 : 215,
+    };
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(createParticle());
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach((p, i) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha -= 0.0008;
+      if (p.alpha <= 0 || p.y < -10) {
+        particles[i] = createParticle();
+        particles[i].y = H + 5;
+        return;
+      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${p.hue}, 90%, 70%, ${p.alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ═══════════════════════════════════════════
+   FORM LOGIC
+═══════════════════════════════════════════ */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPBhrRiS1tYeFHJtx77YT5Nm5hUPh3VOcw81tLiGXTkVBYxHcyAi41vqoB9OV4lGLE/exec";
+let kpiCount = 0, processCount = 0;
+
+window.addEventListener('DOMContentLoaded', () => {
+  addKPI();
+  addProcess();
+  initPills();
+  initCheckCards();
+  initInputTracking();
+  updateProgress();
+});
+
+function initPills() {
+  document.querySelectorAll('.pill-group').forEach(g => {
+    g.querySelectorAll('.pill').forEach(pill => {
+      if (!pill.dataset.bound) {
+        pill.dataset.bound = '1';
+        pill.addEventListener('click', () => {
+          g.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          updateProgress();
+        });
+      }
+    });
+  });
+}
+
+function initCheckCards() {
+  document.querySelectorAll('.check-card').forEach(card => {
+    if (!card.dataset.bound) {
+      card.dataset.bound = '1';
+      card.addEventListener('click', () => {
+        card.classList.toggle('active');
+        card.querySelector('input[type=checkbox]').checked = card.classList.contains('active');
+        updateProgress();
+      });
+    }
+  });
+}
+
+function initInputTracking() {
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    if (!el.dataset.tracked) {
+      el.dataset.tracked = '1';
+      el.addEventListener('input', updateProgress);
+      el.addEventListener('change', updateProgress);
+    }
+  });
+}
+
+function updateProgress() {
+  const sections = document.querySelectorAll('.section');
+  const filled = [...sections].filter(s => {
+    const inputs = s.querySelectorAll('input[type=text], input[type=email], textarea');
+    return [...inputs].some(i => i.value.trim()) ||
+           s.querySelector('.pill.active') || s.querySelector('.check-card.active');
+  }).length;
+  const total = sections.length;
+  const pct = Math.round((filled / total) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `${filled} of ${total} sections started`;
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+/* KPI Block */
+function kpiHTML(n) {
+  return `
+  <div class="repeat-block" id="kpi-block-${n}">
+    <div class="repeat-block-title">
+      <span><span class="block-count">${n}</span>KPI #${n}</span>
+      <button type="button" class="remove-btn" onclick="removeBlock('kpi-block-${n}','kpi-container')">✕ Remove</button>
+    </div>
+    <div class="grid-2">
+      <div class="field"><div class="field-label">KPI name <span class="req">*</span></div><input type="text" class="kpi-name" placeholder="e.g. Monthly Revenue Achievement"></div>
+      <div class="field"><div class="field-label">KPI objective</div><input type="text" class="kpi-objective" placeholder="e.g. Track actual vs. target revenue"></div>
+      <div class="field"><div class="field-label">KPI category</div>
+        <select class="kpi-category"><option value="">Select…</option><option>Sales</option><option>Marketing</option><option>Operations</option><option>Finance</option><option>Customer</option><option>Product</option></select>
+      </div>
+      <div class="field"><div class="field-label">Level of detail</div><input type="text" class="kpi-level" placeholder="e.g. Region / Product / Customer"></div>
+    </div>
+    <div class="field"><div class="field-label">KPI formula / Calculation logic</div><textarea class="kpi-formula" style="min-height:60px" placeholder="e.g. (Actual Sales ÷ Target Sales) × 100 — specify exact fields and logic"></textarea></div>
+    <div class="grid-2">
+      <div class="field"><div class="field-label">Required data / fields</div><textarea class="kpi-data" style="min-height:60px" placeholder="e.g. Sales date, product code, region, actual amount, target amount"></textarea></div>
+      <div class="field"><div class="field-label">Data source</div><input type="text" class="kpi-source" placeholder="e.g. CRM, SAP, Salesforce, ERP, Excel"></div>
+    </div>
+  </div>`;
+}
+
+function addKPI() {
+  kpiCount++;
+  document.getElementById('kpi-container').insertAdjacentHTML('beforeend', kpiHTML(kpiCount));
+  initInputTracking();
+  updateProgress();
+}
+
+/* Process Block */
+function processHTML(n) {
+  return `
+  <div class="repeat-block process" id="proc-block-${n}">
+    <div class="repeat-block-title">
+      <span><span class="block-count">${n}</span>Process #${n}</span>
+      <button type="button" class="remove-btn" onclick="removeBlock('proc-block-${n}','process-container')">✕ Remove</button>
+    </div>
+    <div class="field">
+      <div class="field-label">Process / area name <span class="req">*</span></div>
+      <input type="text" class="proc-name" placeholder="e.g. Weekly Sales Report Compilation, Lead Follow-Up Tracking">
+      <div class="hint">Give this process a short name for clear reference</div>
+    </div>
+    <div class="field">
+      <div class="field-label">How is this currently done? <span class="req">*</span></div>
+      <textarea class="proc-current" placeholder="e.g. Sales managers manually compile data from 3 Excel files each week and email the summary."></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Pain points in the current process</div>
+      <textarea class="proc-pain" placeholder="e.g. Prone to errors, time-consuming, data not real-time, no single source of truth."></textarea>
+    </div>
+    <div class="grid-3">
+      <div class="field">
+        <div class="field-label">Manual effort</div>
+        <div class="pill-group" data-id="manualEffort-${n}">
+          <label class="pill"><input type="radio" name="effort-${n}">High</label>
+          <label class="pill"><input type="radio" name="effort-${n}">Medium</label>
+          <label class="pill"><input type="radio" name="effort-${n}">Low</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">Automation required?</div>
+        <div class="pill-group" data-id="automation-${n}">
+          <label class="pill"><input type="radio" name="automate-${n}">Yes</label>
+          <label class="pill"><input type="radio" name="automate-${n}">No</label>
+          <label class="pill"><input type="radio" name="automate-${n}">Unsure</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">Existing workaround</div>
+        <input type="text" class="proc-workaround" placeholder="e.g. Excel macros, Power BI">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <div class="field-label">What needs improvement?</div>
+        <textarea class="proc-improve" style="min-height:60px" placeholder="e.g. Automate consolidation, real-time dashboard, eliminate manual tracking."></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label">Expected efficiency gain</div>
+        <textarea class="proc-gain" style="min-height:60px" placeholder="e.g. Save 6 hrs/week, reduce errors by 80%, daily data refresh."></textarea>
+        <div class="hint">Quantify where possible</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function addProcess() {
+  processCount++;
+  document.getElementById('process-container').insertAdjacentHTML('beforeend', processHTML(processCount));
+  initPills();
+  initInputTracking();
+  updateProgress();
+}
+
+function removeBlock(blockId, containerId) {
+  const container = document.getElementById(containerId);
+  if (container.querySelectorAll('.repeat-block').length <= 1) {
+    alert('At least one entry is required.'); return;
+  }
+  document.getElementById(blockId).remove();
+  updateProgress();
+}
+
+/* Helpers */
+function getPillValue(dataId) {
+  const grp = document.querySelector(`.pill-group[data-id="${dataId}"]`);
+  if (!grp) return '';
+  const a = grp.querySelector('.pill.active');
+  return a ? a.textContent.trim() : '';
+}
+function getCheckValues(dataId) {
+  const grp = document.querySelector(`.check-grid[data-id="${dataId}"]`);
+  if (!grp) return '';
+  return [...grp.querySelectorAll('.check-card.active')].map(c => c.querySelector('input').value).join(', ');
+}
+function getKPIs() {
+  return [...document.querySelectorAll('#kpi-container .repeat-block')].map((b, i) => ({
+    kpiNumber:    i + 1,
+    name:         b.querySelector('.kpi-name')?.value.trim() || '',
+    objective:    b.querySelector('.kpi-objective')?.value.trim() || '',
+    category:     b.querySelector('.kpi-category')?.value.trim() || '',
+    level:        b.querySelector('.kpi-level')?.value.trim() || '',
+    formula:      b.querySelector('.kpi-formula')?.value.trim() || '',
+    requiredData: b.querySelector('.kpi-data')?.value.trim() || '',
+    dataSource:   b.querySelector('.kpi-source')?.value.trim() || '',
+  }));
+}
+function getProcesses() {
+  return [...document.querySelectorAll('#process-container .repeat-block')].map((b, i) => {
+    const id = b.id.replace('proc-block-', '');
+    return {
+      processNumber:  i + 1,
+      name:           b.querySelector('.proc-name')?.value.trim() || '',
+      currentProcess: b.querySelector('.proc-current')?.value.trim() || '',
+      painPoints:     b.querySelector('.proc-pain')?.value.trim() || '',
+      manualEffort:   getPillValue(`manualEffort-${id}`),
+      automation:     getPillValue(`automation-${id}`),
+      workaround:     b.querySelector('.proc-workaround')?.value.trim() || '',
+      improvements:   b.querySelector('.proc-improve')?.value.trim() || '',
+      efficiencyGain: b.querySelector('.proc-gain')?.value.trim() || '',
+    };
+  });
+}
+
+/* Validate */
+function validate() {
+  const fields = [
+    { id:'fullName',          label:'Full Name' },
+    { id:'workEmail',         label:'Work Email' },
+    { id:'region',            label:'Country / Region' },
+    { id:'businessUnit',      label:'Business Team' },
+    { id:'requirementTitle',  label:'Requirement Title' },
+    { id:'description',       label:'Description' },
+    { id:'businessObjective', label:'Business Objective' },
+    { id:'problemStatement',  label:'Problem Statement' },
+  ];
+  for (const f of fields) {
+    const el = document.getElementById(f.id);
+    if (!el || !el.value.trim()) { alert(`Please fill in: ${f.label}`); el?.focus(); return false; }
+  }
+  if (!getPillValue('businessSegment'))  { alert('Please select a Business Segment (Section 2).'); return false; }
+  if (!getPillValue('requirementType'))  { alert('Please select a Requirement Type (Section 3).'); return false; }
+  if (!getCheckValues('targetUsers'))    { alert('Please select at least one Target User (Section 5).'); return false; }
+  if (!getKPIs().some(k => k.name))      { alert('Please enter at least one KPI name (Section 6).'); return false; }
+  const procs = getProcesses();
+  for (let i = 0; i < procs.length; i++) {
+    if (!procs[i].currentProcess) { alert(`Process #${i+1}: Please describe the current process (Section 7).`); return false; }
+  }
+  if (!getPillValue('outputType'))       { alert('Please select an Output Type (Section 8).'); return false; }
+  if (!getPillValue('refreshFrequency')) { alert('Please select a Refresh Frequency (Section 9).'); return false; }
+  return true;
+}
+
+/* Submit */
+function submitForm() {
+  if (!validate()) return;
+  const btn = document.getElementById('submit-btn');
+  const spinner = document.getElementById('spinner');
+  const errBnr = document.getElementById('error-banner');
+  btn.disabled = true;
+  btn.style.display = 'none';
+  spinner.style.display = 'block';
+  errBnr.style.display = 'none';
+
+  const kpis = getKPIs();
+  const processes = getProcesses();
+
+  const payload = {
+    fullName: document.getElementById('fullName').value.trim(),
+    workEmail: document.getElementById('workEmail').value.trim(),
+    region: document.getElementById('region').value,
+    businessUnit: document.getElementById('businessUnit').value.trim(),
+    businessSegment: getPillValue('businessSegment'),
+    requirementType: getPillValue('requirementType'),
+    requirementTitle: document.getElementById('requirementTitle').value.trim(),
+    description: document.getElementById('description').value.trim(),
+    businessObjective: document.getElementById('businessObjective').value.trim(),
+    problemStatement: document.getElementById('problemStatement').value.trim(),
+    expectedOutcome: document.getElementById('expectedOutcome').value.trim(),
+    businessImpact: document.getElementById('businessImpact').value.trim(),
+    targetUsers: getCheckValues('targetUsers'),
+    kpiData: JSON.stringify(kpis),   kpiCount: kpis.length,
+    processData: JSON.stringify(processes), processCount: processes.length,
+    outputType: getPillValue('outputType'),
+    visualization: getCheckValues('visualization'),
+    vizNotes: document.getElementById('vizNotes').value.trim(),
+    refreshFrequency: getPillValue('refreshFrequency'),
+    timeView: getCheckValues('timeView'),
+    deliveryDate: document.getElementById('deliveryDate').value,
+    kpiTargets: document.getElementById('kpiTargets').value.trim(),
+    alertRequirements: document.getElementById('alertRequirements').value.trim(),
+    supportingDoc: document.getElementById('supportingDoc').value.trim(),
+    otherComments: document.getElementById('otherComments').value.trim(),
+    submittedAt: new Date().toISOString(),
+  };
+
+  fetch(SCRIPT_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  .then(() => {
+    spinner.style.display = 'none';
+    document.getElementById('success-card').style.display = 'block';
+    document.getElementById('prog-fill').style.width = '100%';
+    document.getElementById('prog-pct').textContent = '100%';
+    document.getElementById('prog-label').textContent = 'Submitted ✓';
+    document.getElementById('success-card').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  })
+  .catch(() => {
+    spinner.style.display = 'none';
+    btn.style.display = 'inline-flex';
+    btn.disabled = false;
+    errBnr.style.display = 'block';
+  });
+}
+</script>
+</body>
+</html>
